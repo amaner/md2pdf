@@ -6,12 +6,14 @@ This script converts a Markdown file to a PDF file named 'output.pdf' in the sam
 It uses Pandoc, which is much more reliable on macOS than WeasyPrint.
 
 Usage:
-    python md_to_pdf.py path/to/markdown_file.md
+    python md_to_pdf.py path/to/markdown_file.md [--pdf-engine engine]
 
 The output PDF will be saved as 'output.pdf' in the same directory as the input file.
 
 Dependencies:
     - pandoc: For converting Markdown to PDF (install with: brew install pandoc)
+    - A PDF engine: xelatex (default), pdflatex, wkhtmltopdf, etc.
+      (install TeX distribution with: brew install --cask mactex)
 """
 
 import os
@@ -20,7 +22,7 @@ import argparse
 import subprocess
 import tempfile
 
-def markdown_to_pdf(markdown_path):
+def markdown_to_pdf(markdown_path, pdf_engine='xelatex'):
     """
     Convert a Markdown file to PDF using Pandoc and save it as 'output.pdf' in the same directory.
     
@@ -30,6 +32,8 @@ def markdown_to_pdf(markdown_path):
     
     Args:
         markdown_path (str): The path to the Markdown file to convert
+        pdf_engine (str, optional): The PDF engine to use (e.g., 'xelatex', 'pdflatex', 'wkhtmltopdf')
+                                   Default is 'xelatex' for better Unicode support.
         
     Returns:
         bool: True if conversion was successful, False otherwise
@@ -91,13 +95,13 @@ def markdown_to_pdf(markdown_path):
             css_path = temp_css.name
         
         # Build the pandoc command
-        # Using the default PDF engine which is typically LaTeX-based
         cmd = [
             'pandoc',
             markdown_path,
             '-o', output_path,
             '--css', css_path,
-            '--standalone'
+            '--standalone',
+            '--pdf-engine', pdf_engine
         ]
         
         # Execute the command
@@ -128,6 +132,8 @@ def main():
     # Set up argument parser for command line interface
     parser = argparse.ArgumentParser(description='Convert Markdown to PDF')
     parser.add_argument('markdown_file', help='Path to the Markdown file to convert')
+    parser.add_argument('--pdf-engine', default='xelatex', 
+                        help='PDF engine to use (e.g., xelatex, pdflatex, wkhtmltopdf)')
     
     # Parse arguments from command line
     args = parser.parse_args()
@@ -150,7 +156,7 @@ def main():
         sys.exit(1)
     
     # Convert Markdown to PDF
-    success = markdown_to_pdf(args.markdown_file)
+    success = markdown_to_pdf(args.markdown_file, args.pdf_engine)
     
     # Exit with appropriate status code (0 for success, 1 for failure)
     sys.exit(0 if success else 1)
