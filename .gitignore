@@ -1,0 +1,27 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# PDF output files
+output.pdf
+
+# macOS system files
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo

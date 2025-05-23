@@ -1,0 +1,4 @@
+# No Python package dependencies required for the Pandoc version
+# Pandoc and wkhtmltopdf should be installed via Homebrew:
+# brew install pandoc
+# brew install wkhtmltopdf
