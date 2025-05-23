@@ -25,3 +25,7 @@ output.pdf
 .idea/
 *.swp
 *.swo
+
+# Ignore all markdown files except README.md
+*.md
+!README.md
